@@ -2,11 +2,9 @@ version: 2
 
 references:
 
-base_image: &base_image
-  hashicorp/terraform:light
+base_image: &base_image hashicorp/terraform:light
 
-working_directory: &working_directory
-  ~/example
+working_directory: &working_directory ~/example
 
 default_config: &default_config
   docker:
@@ -15,8 +13,7 @@ default_config: &default_config
   environment:
     BASH_ENV: /root/.bashrc
 
-repo_cache_key: &repo_cache_key
-  v1-repo-{{ .Branch }}-{{ .Revision }}
+repo_cache_key: &repo_cache_key v1-repo-{{ .Branch }}-{{ .Revision }}
 
 # Step to restore repository from cache
 restore_repo: &restore_repo
@@ -65,7 +62,6 @@ apply_job: &apply_job
           terraform apply --auto-approve ../../terraform.plan
 
 jobs:
-
   build:
     <<: *default_config
     steps:
@@ -122,6 +118,8 @@ workflows:
       - plan:
           requires:
             - build
+          context:
+            - AWS LDN
       - approve:
           type: approval
           requires:
